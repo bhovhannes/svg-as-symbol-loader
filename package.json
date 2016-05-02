@@ -1,0 +1,40 @@
+{
+  "name": "svg-as-symbol-loader",
+  "version": "0.0.0",
+  "description": "A webpack loader which loads SVG file contents as SVG <symbol> element markup.",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "./node_modules/.bin/_mocha -- test/*.spec.js",
+    "cov": "istanbul cover ./node_modules/.bin/_mocha -- test/*.spec.js"
+  },
+  "dependencies": {
+    "loader-utils": "0.2.x",
+    "xmldom": "0.1.22"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bhovhannes/svg-as-symbol-loader.git"
+  },
+  "keywords": [
+    "loader",
+    "symbol",
+    "svg",
+    "utf8",
+    "encoding",
+    "data-uri"
+  ],
+  "author": "Hovhannes Babayan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bhovhannes/svg-as-symbol-loader/issues"
+  },
+  "homepage": "https://github.com/bhovhannes/svg-as-symbol-loader#readme",
+  "devDependencies": {
+    "expect.js": "~0.3.1",
+    "istanbul": "~0.4.2",
+    "mocha": "~2.4.2",
+    "object-assign": "~4.0.1",
+    "webpack": "~1.13.0",
+    "xpath": "0.0.23"
+  }
+}
