@@ -1,6 +1,6 @@
 {
   "name": "svg-as-symbol-loader",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "A webpack loader which loads SVG file contents as SVG <symbol> element markup.",
   "main": "src/index.js",
   "scripts": {
