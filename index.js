@@ -12,30 +12,41 @@ module.exports = function(content) {
 	var query = loaderUtils.parseQuery(this.query);
 
 	content = content.toString('utf8');
+	
+	var tagName = 'symbol';
+	if (query.tag) {
+		tagName = query.tag;
+	}
 
-	var symbolDoc = new xmldom.DOMParser().parseFromString('<symbol></symbol>', 'text/xml');
-	var symbolEl = symbolDoc.documentElement;
+	var targetDoc = new xmldom.DOMParser().parseFromString('<'+tagName+'></'+tagName+'>', 'text/xml');
+	var targetEl = targetDoc.documentElement;
 
 	var svgDoc = new xmldom.DOMParser().parseFromString(content, "text/xml");
 	var svgEl = svgDoc.documentElement;
 	
-	['viewBox', 'height', 'width'].forEach(function(attr) {
-		if (svgEl.hasAttribute(attr)) {
-			symbolEl.setAttribute(attr, svgEl.getAttribute(attr));
+	var attributes = ['viewBox', 'height', 'width', 'preserveAspectRatio'];
+	attributes.forEach(function(attr) {
+		if (query[attr]) {
+			targetEl.setAttribute(attr, query[attr]);
+		}
+		else if (svgEl.hasAttribute(attr)) {
+			targetEl.setAttribute(attr, svgEl.getAttribute(attr));
+		}
+	});
+
+	['id'].forEach(function(param) {
+		if (query[param]) {
+			targetEl.setAttribute(param, query[param]);
 		}
 	});
 	
-	if (query.id) {
-		symbolEl.setAttribute('id', query.id);
-	}
-	
 	var el = svgEl.firstChild;
 	while(el) {
-		symbolEl.appendChild(symbolDoc.importNode(el, true));
+		targetEl.appendChild(targetDoc.importNode(el, true));
 		el = el.nextSibling;
 	}
 
-	var markup = new xmldom.XMLSerializer().serializeToString(symbolDoc);
+	var markup = new xmldom.XMLSerializer().serializeToString(targetDoc);
 	return 'module.exports = ' + JSON.stringify(markup);
 };
 

@@ -86,4 +86,48 @@ describe('svg-as-symbol-loader', function() {
 			});
 		});
 	});
+
+	it('should use provided attribute instead of one found in SVG file if it is specified in query', function(done) {
+		var config = assign({}, globalConfig, {
+			entry: './test/input/icon.js'
+		});
+
+		config.module.loaders[0].query.height = '400px';
+
+		webpack(config, function(err) {
+			expect(err).to.be(null);
+			fs.readFile(getBundleFile(), function(err, data) {
+				expect(err).to.be(null);
+				var encoded = (0,eval)(data.toString());
+
+				var outputDoc = new xmldom.DOMParser().parseFromString(encoded, 'text/xml');
+				var outputEl = outputDoc.documentElement;
+				expect(outputEl.getAttribute('height')).to.be('400px');
+
+				return done();
+			});
+		});
+	});
+
+	it('should use given tag instead of default symbol tag if it was provided by query', function(done) {
+		var config = assign({}, globalConfig, {
+			entry: './test/input/icon.js'
+		});
+
+		config.module.loaders[0].query.tag = 'pattern';
+
+		webpack(config, function(err) {
+			expect(err).to.be(null);
+			fs.readFile(getBundleFile(), function(err, data) {
+				expect(err).to.be(null);
+				var encoded = (0,eval)(data.toString());
+
+				var outputDoc = new xmldom.DOMParser().parseFromString(encoded, 'text/xml');
+				var outputEl = outputDoc.documentElement;
+				expect(outputEl.tagName).to.be('pattern');
+
+				return done();
+			});
+		});
+	});
 });
