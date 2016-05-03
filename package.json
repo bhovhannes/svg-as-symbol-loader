@@ -9,7 +9,8 @@
   },
   "dependencies": {
     "loader-utils": "0.2.x",
-    "xmldom": "0.1.22"
+    "xmldom": "0.1.22",
+    "xpath": "0.0.23"
   },
   "repository": {
     "type": "git",
@@ -34,7 +35,6 @@
     "istanbul": "~0.4.2",
     "mocha": "~2.4.2",
     "object-assign": "~4.1.0",
-    "webpack": "~1.13.0",
-    "xpath": "0.0.23"
+    "webpack": "~1.13.0"
   }
 }

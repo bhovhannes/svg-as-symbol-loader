@@ -1,4 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 200 500" width="300">
+<svg xmlns="http://www.w3.org/2000/svg" zz="url(#baz)" version="1.1" viewBox="0 0 200 500" width="300">
   <rect x="25" y="25" width="200" height="200" fill="lime" stroke-width="4" stroke="pink" />
   <circle cx="125" cy="125" r="75" fill="orange" />
+
+  <linearGradient id="baz" gradientUnits="userSpaceOnUse" x1="9.083" y1="-.1" x2="9.083" y2="17.682">
+    <stop offset="0" stop-color="#EC836F"/>
+    <stop offset="1" stop-color="#C73F27"/>
+  </linearGradient>
+  <path fill="url(#baz)" d="M9.1 17.8C4.3 17.8.4 13.9.4 9.1S4.3.4 9.1.4s8.7 3.9 8.7 8.7-3.9 8.7-8.7 8.7z"/>
 </svg>

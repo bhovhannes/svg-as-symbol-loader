@@ -130,4 +130,30 @@ describe('svg-as-symbol-loader', function() {
 			});
 		});
 	});
+
+	it('should append random prefix to all ID attributes used', function(done) {
+		var config = assign({}, globalConfig, {
+			entry: './test/input/icon.js'
+		});
+
+		webpack(config, function(err) {
+			expect(err).to.be(null);
+			fs.readFile(getBundleFile(), function(err, data) {
+				expect(err).to.be(null);
+				var encoded = (0,eval)(data.toString());
+
+				var outputDoc = new xmldom.DOMParser().parseFromString(encoded, 'text/xml');
+
+				var linearGradient = xpath.select("//linearGradient", outputDoc);
+				expect(linearGradient.length).to.be(1);
+				var prefixedId = linearGradient[0].getAttribute('id');
+
+				var path = xpath.select("//path", outputDoc);
+				expect(path.length).to.be(1);
+				expect(path[0].getAttribute('fill')).to.be('url(#' + prefixedId + ')');
+
+				return done();
+			});
+		});
+	});
 });
