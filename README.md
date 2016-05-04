@@ -1,11 +1,11 @@
 # svg-as-symbol-loader
 [![NPM version][npm-version-image]][npm-url] [![NPM downloads][npm-downloads-image]][npm-url] [![Dependencies][deps-image]][deps-url] [![Dev. Dependencies][dev-deps-image]][dev-deps-url] [![MIT License][license-image]][license-url] [![Build Status][travis-image]][travis-url]
 
-A webpack loader which wraps content of root element of source SVG file  inside [`<symbol>`](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/symbol) element and returns resulting markup.
+A webpack loader which wraps content of root element of source SVG file inside [`<symbol>`](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/symbol) element and returns resulting markup.
 
 ## What loader does
 
-It takes contents of root element in source SVG markup (usually, root element will be `<svg>`), wraps it into [`<symbol>`](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/symbol) tag and returns resulting markup.  
+It takes contents of root element in source SVG markup (usually, root element will be [`<svg>`](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/svg)), wraps it into [`<symbol>`](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/symbol) tag and returns resulting markup.  
  It is possible to use another tag instead of [`<symbol>`](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/symbol) using [`tag`](#tag) loader parameter.  
  Attributes applied to root element in source SVG file will be preserved and applied to target [`<symbol>`](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/symbol) tag.  
  If source SVG image contains elements with `id` attribute set, loader will append unique prefix to all `id`s in order to make them unique in the universe.
