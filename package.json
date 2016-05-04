@@ -17,12 +17,10 @@
     "url": "git+https://github.com/bhovhannes/svg-as-symbol-loader.git"
   },
   "keywords": [
+    "webpack",
     "loader",
     "symbol",
-    "svg",
-    "utf8",
-    "encoding",
-    "data-uri"
+    "svg"
   ],
   "author": "Hovhannes Babayan",
   "license": "MIT",
