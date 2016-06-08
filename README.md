@@ -17,7 +17,8 @@ There may be different usage scenarios for different people. One of them is desc
 
 Usually [`data:URI`](https://developer.mozilla.org/en-US/docs/Web/HTTP/data_URIs) scheme is used to embed icons in SVG file. That results in SVG file containing urls with `data:URI` scheme.  
 Although support for such url scheme is pretty good, some SVG parsers do not understand such urls. For example, Apache Batik fails to rasterize SVG markup including urls with `data:URI` to PDF.  
-If embedded icon is SVG itself, it can be included by copy/pasting its markup into target SVG file. As [`<svg>`](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/svg) element cannot contain another [`<svg>`](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/svg) element, [`<svg>`](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/svg) element in the icon to be embedded can be replaced with [`<symbol>`](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/symbol) element with the same contents and attributes (examples of such attributes are [`viewBox`](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/viewBox), [`width`](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/width), etc.). In order to point to inserted [`<symbol>`](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/symbol) element, it should have an `id` attribute assigned, which can be assigned using [`id`](#id) loader parameter.
+If embedded icon is SVG itself, it can be included by copy/pasting its markup into target SVG file. 
+ In order to point to inserted element, it should have an `id` attribute assigned, which can be assigned using [`id`](#id) loader parameter.
 
 ## Supported parameters
 

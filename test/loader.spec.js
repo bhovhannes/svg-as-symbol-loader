@@ -131,6 +131,28 @@ describe('svg-as-symbol-loader', function() {
 		});
 	});
 
+	it('should be able to use SVG tag instead of default symbol tag if it was provided by query', function(done) {
+		var config = assign({}, globalConfig, {
+			entry: './test/input/icon.js'
+		});
+
+		config.module.loaders[0].query.tag = 'svg';
+
+		webpack(config, function(err) {
+			expect(err).to.be(null);
+			fs.readFile(getBundleFile(), function(err, data) {
+				expect(err).to.be(null);
+				var encoded = (0,eval)(data.toString());
+
+				var outputDoc = new xmldom.DOMParser().parseFromString(encoded, 'text/xml');
+				var outputEl = outputDoc.documentElement;
+				expect(outputEl.tagName).to.be('svg');
+
+				return done();
+			});
+		});
+	});
+
 	it('should append random prefix to all ID attributes used', function(done) {
 		var config = assign({}, globalConfig, {
 			entry: './test/input/icon.js'
