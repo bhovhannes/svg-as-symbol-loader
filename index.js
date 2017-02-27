@@ -11,7 +11,7 @@ var crypto = require('crypto');
 module.exports = function(content) {
 	this.cacheable && this.cacheable();
 
-	var query = loaderUtils.parseQuery(this.query);
+	var query = loaderUtils.getOptions(this);
 
 	content = content.toString('utf8');
 
