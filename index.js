@@ -12,16 +12,26 @@ module.exports = function(content) {
 	this.cacheable && this.cacheable();
 
 	var query = loaderUtils.getOptions(this);
+	var configKey = query.config || "svgAsSymbolLoader";
+	var options = this.options[configKey] || {};
+	var config = {
+		tag : 'symbol'
+	};
+	var context;
+	var content;
 
+	Object.keys(options).forEach(function (attr) {
+	    config[attr] = options[attr];
+	});
+
+	Object.keys(query).forEach(function (attr) {
+	    config[attr] = query[attr];
+	});
+
+	context = config.context || this.options.context;
 	content = content.toString('utf8');
 
-	// Determine which element to use as target
-	var tagName = 'symbol';
-	if (query.tag) {
-		tagName = query.tag;
-	}
-
-	var targetDoc = new xmldom.DOMParser().parseFromString('<'+tagName+'></'+tagName+'>', 'text/xml');
+	var targetDoc = new xmldom.DOMParser().parseFromString('<'+config.tag+'></'+config.tag+'>', 'text/xml');
 	var targetEl = targetDoc.documentElement;
 
 	var svgDoc = new xmldom.DOMParser().parseFromString(content, "text/xml");
@@ -40,11 +50,15 @@ module.exports = function(content) {
 	});
 
 	// Apply additional attributes provided via loader query string
-	['id'].forEach(function(param) {
+	['id', 'class'].forEach(function(param) {
 		if (query[param]) {
-			targetEl.setAttribute(param, query[param]);
+		    targetEl.setAttribute(param, loaderUtils.interpolateName(this, query[param], {
+		        context: context,
+		        content: content,
+		        regExp: config.regExp
+		    }));
 		}
-	});
+	}.bind(this));
 
 	// Move all child nodes from SVG element to the target element
 	var el = svgEl.firstChild;
