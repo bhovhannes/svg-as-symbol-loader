@@ -17,7 +17,7 @@ There may be different usage scenarios for different people. One of them is desc
 
 Usually [`data:URI`](https://developer.mozilla.org/en-US/docs/Web/HTTP/data_URIs) scheme is used to embed icons in SVG file. That results in SVG file containing urls with `data:URI` scheme.  
 Although support for such url scheme is pretty good, some SVG parsers do not understand such urls. For example, Apache Batik fails to rasterize SVG markup including urls with `data:URI` to PDF.  
-If embedded icon is SVG itself, it can be included by copy/pasting its markup into target SVG file. 
+If embedded icon is SVG itself, it can be included by copy/pasting its markup into target SVG file.
  In order to point to inserted element, it should have an `id` attribute assigned, which can be assigned using [`id`](#id) loader parameter.
 
 ## Supported parameters
@@ -29,6 +29,9 @@ Defaults to `symbol`. Is used as the name of root tag in generated SVG markup.
 
 #### `id`
 If given, will be applied to the root tag (`symbol` by default, see description for [`tag`](#tag) option) in generated SVG markup.
+
+#### `class`
+If given, will be applied to the root tag in generated SVG markup.
 
 #### `viewBox`
 If given, overwrites value of `viewBox` attribute applied to the `svg` tag in source SVG file.
@@ -44,6 +47,8 @@ If given, overwrites value of `preserveAspectRatio` attribute applied to the `sv
 
 
 Parameters can be passed both in a url or from webpack config file. See [Using loaders](http://webpack.github.io/docs/using-loaders.html) section in webpack documentation for more details.
+
+The `id` and `class` parameters allow naming templates based on filename interpolation. See [`loader-utils#interpolatename`](https://github.com/webpack/loader-utils#interpolatename) for full usage details.
 
 ## Usage
 
