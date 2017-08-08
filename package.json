@@ -33,6 +33,6 @@
     "istanbul": "~0.4.2",
     "mocha": "~3.5.0",
     "object-assign": "~4.1.0",
-    "webpack": "~3.4.0"
+    "webpack": "~3.5.0"
   }
 }
