@@ -17,17 +17,18 @@ describe('svg-as-symbol-loader', function() {
     var svgAsSymbolLoader = path.resolve(__dirname, '../');
     var globalConfig = {
         context: path.resolve(__dirname, '../'),
+		mode: 'development',
         output: {
             path: outputDir,
             filename: bundleFileName
         },
         module: {
-            loaders: [
+            rules: [
                 {
                     test: /\.svg/,
+                    exclude: /node_modules/,
                     loader: svgAsSymbolLoader,
-                    query: {},
-                    exclude: /node_modules/
+                    options: {}
                 }
             ]
         }
@@ -48,11 +49,11 @@ describe('svg-as-symbol-loader', function() {
             expect(err).to.be(null);
             fs.readFile(getBundleFile(), function(err, data) {
                 expect(err).to.be(null);
-                var encoded = (0,eval)(data.toString());
+                var encoded = eval(data.toString());
 
 				var outputDoc = new xmldom.DOMParser().parseFromString(encoded, 'text/xml');
 				var outputEl = outputDoc.documentElement;
-                expect(outputEl.tagName).to.be('symbol');
+				expect(outputEl.tagName).to.be('symbol');
 
 				var rectNodes = xpath.select("//rect", outputDoc);
 				expect(rectNodes.length).to.be(1);
@@ -60,7 +61,7 @@ describe('svg-as-symbol-loader', function() {
 				var circleNodes = xpath.select("//circle", outputDoc);
 				expect(circleNodes.length).to.be(1);
 
-                return done();
+				return done();
             });
         });
     });
@@ -70,13 +71,13 @@ describe('svg-as-symbol-loader', function() {
 			entry: './test/input/icon.js'
 		});
 
-		config.module.loaders[0].query.id = 'foo';
+		config.module.rules[0].options.id = 'foo';
 
 		webpack(config, function(err) {
 			expect(err).to.be(null);
 			fs.readFile(getBundleFile(), function(err, data) {
 				expect(err).to.be(null);
-				var encoded = (0,eval)(data.toString());
+				var encoded = eval(data.toString());
 
 				var outputDoc = new xmldom.DOMParser().parseFromString(encoded, 'text/xml');
 				var outputEl = outputDoc.documentElement;
@@ -92,13 +93,13 @@ describe('svg-as-symbol-loader', function() {
 			entry: './test/input/icon.js'
 		});
 
-		config.module.loaders[0].query.class = 'foo';
+		config.module.rules[0].options.class = 'foo';
 
 		webpack(config, function(err) {
 			expect(err).to.be(null);
 			fs.readFile(getBundleFile(), function(err, data) {
 				expect(err).to.be(null);
-				var encoded = (0,eval)(data.toString());
+				var encoded = eval(data.toString());
 
 				var outputDoc = new xmldom.DOMParser().parseFromString(encoded, 'text/xml');
 				var outputEl = outputDoc.documentElement;
@@ -114,13 +115,13 @@ describe('svg-as-symbol-loader', function() {
 			entry: './test/input/icon.js'
 		});
 
-		config.module.loaders[0].query.height = '400px';
+		config.module.rules[0].options.height = '400px';
 
 		webpack(config, function(err) {
 			expect(err).to.be(null);
 			fs.readFile(getBundleFile(), function(err, data) {
 				expect(err).to.be(null);
-				var encoded = (0,eval)(data.toString());
+				var encoded = eval(data.toString());
 
 				var outputDoc = new xmldom.DOMParser().parseFromString(encoded, 'text/xml');
 				var outputEl = outputDoc.documentElement;
@@ -136,13 +137,13 @@ describe('svg-as-symbol-loader', function() {
 			entry: './test/input/icon.js'
 		});
 
-		config.module.loaders[0].query.tag = 'pattern';
+		config.module.rules[0].options.tag = 'pattern';
 
 		webpack(config, function(err) {
 			expect(err).to.be(null);
 			fs.readFile(getBundleFile(), function(err, data) {
 				expect(err).to.be(null);
-				var encoded = (0,eval)(data.toString());
+				var encoded = eval(data.toString());
 
 				var outputDoc = new xmldom.DOMParser().parseFromString(encoded, 'text/xml');
 				var outputEl = outputDoc.documentElement;
@@ -158,13 +159,13 @@ describe('svg-as-symbol-loader', function() {
 			entry: './test/input/icon.js'
 		});
 
-		config.module.loaders[0].query.tag = 'svg';
+		config.module.rules[0].options.tag = 'svg';
 
 		webpack(config, function(err) {
 			expect(err).to.be(null);
 			fs.readFile(getBundleFile(), function(err, data) {
 				expect(err).to.be(null);
-				var encoded = (0,eval)(data.toString());
+				var encoded = eval(data.toString());
 
 				var outputDoc = new xmldom.DOMParser().parseFromString(encoded, 'text/xml');
 				var outputEl = outputDoc.documentElement;
@@ -184,7 +185,7 @@ describe('svg-as-symbol-loader', function() {
 			expect(err).to.be(null);
 			fs.readFile(getBundleFile(), function(err, data) {
 				expect(err).to.be(null);
-				var encoded = (0,eval)(data.toString());
+				var encoded = eval(data.toString());
 
 				var outputDoc = new xmldom.DOMParser().parseFromString(encoded, 'text/xml');
 
@@ -206,14 +207,14 @@ describe('svg-as-symbol-loader', function() {
 			entry: './test/input/icon.js'
 		});
 
-		config.module.loaders[0].query.class = '[name].[ext]';
-		config.module.loaders[0].query.id = '[name]';
+		config.module.rules[0].options.class = '[name].[ext]';
+		config.module.rules[0].options.id = '[name]';
 
 		webpack(config, function(err) {
 			expect(err).to.be(null);
 			fs.readFile(getBundleFile(), function(err, data) {
 				expect(err).to.be(null);
-				var encoded = (0,eval)(data.toString());
+				var encoded = eval(data.toString());
 
 				var outputDoc = new xmldom.DOMParser().parseFromString(encoded, 'text/xml');
 				var outputEl = outputDoc.documentElement;

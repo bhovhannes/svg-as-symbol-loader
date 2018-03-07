@@ -22,7 +22,10 @@ module.exports = function(content) {
 	    config[attr] = query[attr];
 	});
 
-	context = config.context || this.options.context;
+	context = config.context
+	if (!context && this.options) {
+		context = this.options.context;
+	}
 	content = content.toString('utf8');
 
 	var targetDoc = new xmldom.DOMParser().parseFromString('<'+config.tag+'></'+config.tag+'>', 'text/xml');
@@ -46,11 +49,14 @@ module.exports = function(content) {
 	// Apply additional attributes provided via loader query string
 	['id', 'class'].forEach(function(param) {
 		if (query[param]) {
-		    targetEl.setAttribute(param, loaderUtils.interpolateName(this, query[param], {
-		        context: context,
-		        content: content,
-		        regExp: config.regExp
-		    }));
+			var interpolateOptions = {
+				content: content,
+				regExp: config.regExp
+			};
+			if (context) {
+				interpolateOptions.context = context
+			}
+		    targetEl.setAttribute(param, loaderUtils.interpolateName(this, query[param], interpolateOptions));
 		}
 	}, this);
 
