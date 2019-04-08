@@ -71,5 +71,5 @@ MIT (http://www.opensource.org/licenses/mit-license.php)
 [npm-version-image]: https://img.shields.io/npm/v/svg-as-symbol-loader.svg?style=flat
 [npm-downloads-image]: https://img.shields.io/npm/dm/svg-as-symbol-loader.svg?style=flat
 
-[travis-url]: https://travis-ci.org/bhovhannes/svg-as-symbol-loader
+[travis-url]: https://travis-ci.com/bhovhannes/svg-as-symbol-loader
 [travis-image]: https://img.shields.io/travis/bhovhannes/svg-as-symbol-loader.svg?style=flat
