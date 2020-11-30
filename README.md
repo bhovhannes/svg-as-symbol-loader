@@ -1,6 +1,6 @@
 # svg-as-symbol-loader
 
-[![NPM version][npm-version-image]][npm-url] [![NPM downloads][npm-downloads-image]][npm-url] [![MIT License][license-image]][license-url]
+[![NPM version][npm-version-image]][npm-url] [![NPM downloads][npm-downloads-image]][npm-url] [![codecov][codecov-image]][codecov-url] [![MIT License][license-image]][license-url]
 
 A webpack loader which wraps content of root element of source SVG file inside [`<symbol>`](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/symbol) element and returns resulting markup.
 
@@ -69,3 +69,5 @@ MIT (http://www.opensource.org/licenses/mit-license.php)
 [npm-url]: https://www.npmjs.org/package/svg-as-symbol-loader
 [npm-version-image]: https://img.shields.io/npm/v/svg-as-symbol-loader.svg?style=flat
 [npm-downloads-image]: https://img.shields.io/npm/dm/svg-as-symbol-loader.svg?style=flat
+[codecov-url]: https://codecov.io/gh/bhovhannes/svg-as-symbol-loader
+[codecov-image]: https://codecov.io/gh/bhovhannes/svg-as-symbol-loader/branch/master/graph/badge.svg?token=iJvUUKrgzB
