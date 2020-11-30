@@ -17,9 +17,12 @@ function getBaseWebpackConfig() {
   return {
     context: path.resolve(__dirname, "../"),
     mode: "development",
+    devtool: false,
     output: {
       path: outputDir,
       filename: bundleFileName,
+      publicPath: "",
+      libraryTarget: "commonjs2",
     },
     module: {
       rules: [
