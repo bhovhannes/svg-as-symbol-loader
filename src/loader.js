@@ -24,12 +24,16 @@ module.exports = function (content) {
   content = content.toString("utf8");
 
   const targetDoc = new DOMParser().parseFromString(
-    "<" + config.tag + "></" + config.tag + ">",
-    "text/xml"
+    "<" +
+      config.tag +
+      ' xmlns="http://www.w3.org/2000/svg"></' +
+      config.tag +
+      ">",
+    "image/svg+xml"
   );
   const targetEl = targetDoc.documentElement;
 
-  const svgDoc = new DOMParser().parseFromString(content, "text/xml");
+  const svgDoc = new DOMParser().parseFromString(content, "image/svg+xml");
   const svgEl = svgDoc.documentElement;
 
   // Transfer supported attributes from SVG element to the target element.

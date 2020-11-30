@@ -3,7 +3,6 @@ const fsPromises = require("fs").promises;
 const path = require("path");
 const webpack = require("webpack");
 const xmldom = require("xmldom");
-const xpath = require("xpath");
 
 const outputDir = path.resolve(__dirname, "./output");
 const bundleFileName = "bundle.js";
@@ -70,16 +69,12 @@ describe("svg-as-symbol-loader", function () {
 
     const outputDoc = new xmldom.DOMParser().parseFromString(
       encoded,
-      "text/xml"
+      "image/svg+xml"
     );
     const outputEl = outputDoc.documentElement;
     expect(outputEl.tagName).toBe("symbol");
-
-    const rectNodes = xpath.select("//rect", outputDoc);
-    expect(rectNodes).toHaveLength(1);
-
-    const circleNodes = xpath.select("//circle", outputDoc);
-    expect(circleNodes).toHaveLength(1);
+    expect(outputEl.getElementsByTagName("rect")).toHaveLength(1);
+    expect(outputEl.getElementsByTagName("circle")).toHaveLength(1);
   });
 
   it("should assign id attribute to generated symbol tag if it was provided by query", async function () {
@@ -95,7 +90,7 @@ describe("svg-as-symbol-loader", function () {
 
     const outputDoc = new xmldom.DOMParser().parseFromString(
       encoded,
-      "text/xml"
+      "image/svg+xml"
     );
     const outputEl = outputDoc.documentElement;
     expect(outputEl.getAttribute("id")).toBe("foo");
@@ -114,7 +109,7 @@ describe("svg-as-symbol-loader", function () {
 
     const outputDoc = new xmldom.DOMParser().parseFromString(
       encoded,
-      "text/xml"
+      "image/svg+xml"
     );
     const outputEl = outputDoc.documentElement;
     expect(outputEl.getAttribute("class")).toBe("foo");
@@ -133,7 +128,7 @@ describe("svg-as-symbol-loader", function () {
 
     const outputDoc = new xmldom.DOMParser().parseFromString(
       encoded,
-      "text/xml"
+      "image/svg+xml"
     );
     const outputEl = outputDoc.documentElement;
     expect(outputEl.getAttribute("height")).toBe("400px");
@@ -152,7 +147,7 @@ describe("svg-as-symbol-loader", function () {
 
     const outputDoc = new xmldom.DOMParser().parseFromString(
       encoded,
-      "text/xml"
+      "image/svg+xml"
     );
     const outputEl = outputDoc.documentElement;
     expect(outputEl.tagName).toBe("pattern");
@@ -171,7 +166,7 @@ describe("svg-as-symbol-loader", function () {
 
     const outputDoc = new xmldom.DOMParser().parseFromString(
       encoded,
-      "text/xml"
+      "image/svg+xml"
     );
     const outputEl = outputDoc.documentElement;
     expect(outputEl.tagName).toBe("svg");
@@ -188,14 +183,15 @@ describe("svg-as-symbol-loader", function () {
 
     const outputDoc = new xmldom.DOMParser().parseFromString(
       encoded,
-      "text/xml"
+      "image/svg+xml"
     );
+    const outputEl = outputDoc.documentElement;
 
-    const linearGradient = xpath.select("//linearGradient", outputDoc);
+    const linearGradient = outputEl.getElementsByTagName("linearGradient");
     expect(linearGradient).toHaveLength(1);
     const prefixedId = linearGradient[0].getAttribute("id");
 
-    const path = xpath.select("//path", outputDoc);
+    const path = outputEl.getElementsByTagName("path");
     expect(path).toHaveLength(1);
     expect(path[0].getAttribute("fill")).toBe("url(#" + prefixedId + ")");
   });
@@ -214,7 +210,7 @@ describe("svg-as-symbol-loader", function () {
 
     const outputDoc = new xmldom.DOMParser().parseFromString(
       encoded,
-      "text/xml"
+      "image/svg+xml"
     );
     const outputEl = outputDoc.documentElement;
     expect(outputEl.getAttribute("class")).toBe("icon.svg");

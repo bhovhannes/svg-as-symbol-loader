@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "loader-utils": "~2.0.0",
-    "xmldom": "0.1.22",
+    "xmldom": "0.4.0",
     "xpath": "0.0.32"
   },
   "repository": {
