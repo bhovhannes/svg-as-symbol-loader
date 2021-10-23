@@ -32,8 +32,8 @@
   "devDependencies": {
     "@arkweid/lefthook": "0.7.7",
     "@bhovhannes/shared-config": "0.0.1",
-    "@jest/globals": "27.2.5",
-    "jest": "27.2.5",
+    "@jest/globals": "27.3.1",
+    "jest": "27.3.1",
     "prettier": "2.4.1",
     "webpack": "5.9.0"
   },
