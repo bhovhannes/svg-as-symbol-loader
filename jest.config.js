@@ -1,5 +1,5 @@
 module.exports = {
-  coverageDirectory: "./coverage",
-  coverageReporters: ["lcov", "html", "text-summary"],
-  collectCoverageFrom: ["./src/**/*.js"],
-};
+  coverageDirectory: './coverage',
+  coverageReporters: ['lcov', 'html', 'text-summary'],
+  collectCoverageFrom: ['./src/**/*.js']
+}

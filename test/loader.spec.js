@@ -1,27 +1,29 @@
-const { describe, it, afterEach, expect } = require("@jest/globals");
-const fsPromises = require("fs").promises;
-const path = require("path");
-const webpack = require("webpack");
-const xmldom = require("xmldom");
+const { describe, it, afterEach, expect, afterAll } = require('@jest/globals')
+const { rejects } = require('assert')
+// const util = require('util');
+// const fs = require('fs');
+// const readdir = util.promisify(fs.readdir);
+// const unlink = util.promisify(fs.unlink);
+const path = require('path')
+const webpack = require('webpack')
+const xmldom = require('xmldom')
 
-const outputDir = path.resolve(__dirname, "./output");
-const bundleFileName = "bundle.js";
-const svgAsSymbolLoader = path.resolve(__dirname, "../");
+const outputDir = path.resolve(__dirname, './output')
 
-function getBundleFile() {
-  return path.join(outputDir, bundleFileName);
-}
+const svgAsSymbolLoader = path.resolve(__dirname, '../')
 
 function getBaseWebpackConfig() {
   return {
-    context: path.resolve(__dirname, "../"),
-    mode: "development",
+    context: path.resolve(__dirname, '../'),
+    mode: 'development',
     devtool: false,
+    cache: false,
     output: {
       path: outputDir,
-      filename: bundleFileName,
-      publicPath: "",
-      libraryTarget: "commonjs2",
+      clean: true,
+      filename: 'bundle.[fullhash].js',
+      publicPath: '',
+      libraryTarget: 'commonjs2'
     },
     module: {
       rules: [
@@ -29,191 +31,166 @@ function getBaseWebpackConfig() {
           test: /\.svg/,
           exclude: /node_modules/,
           loader: svgAsSymbolLoader,
-          options: {},
-        },
-      ],
-    },
-  };
+          options: {}
+        }
+      ]
+    }
+  }
 }
 
 async function runWebpack(config) {
   return new Promise((resolve, reject) => {
-    webpack(config, function (err, data) {
+    webpack(config, function (err, stats) {
       if (err) {
-        reject(err);
+        reject(err)
       } else {
-        resolve(data);
+        resolve(stats.toJson('minimal').assetsByChunkName.main[0])
       }
-    });
-  });
+    })
+  })
 }
 
-async function evaluateGeneratedBundle() {
-  const buffer = await fsPromises.readFile(getBundleFile());
-  const content = buffer.toString();
-  return eval(content);
+function evaluateGeneratedBundle(assetName) {
+  function getBundleFile(assetName) {
+    return path.join(outputDir, assetName)
+  }
+  // require is now mandatory with webpack >5.22.0
+  return eval(`require("${getBundleFile(assetName)}")`)
 }
 
-describe("svg-as-symbol-loader", function () {
-  // Clean generated cache files before each test so that we can call each test with an empty state.
-  afterEach(() => fsPromises.unlink(getBundleFile()));
-
-  it("should wrap SVG contents into symbol tag", async function () {
+describe('svg-as-symbol-loader', function () {
+  it('should wrap SVG contents into symbol tag', async function () {
     const config = {
       ...getBaseWebpackConfig(),
-      entry: "./test/input/icon.js",
-    };
+      entry: './test/input/icon.js'
+    }
 
-    await runWebpack(config);
-    const encoded = await evaluateGeneratedBundle();
+    const assetName = await runWebpack(config)
+    const encoded = evaluateGeneratedBundle(assetName)
 
-    const outputDoc = new xmldom.DOMParser().parseFromString(
-      encoded,
-      "image/svg+xml"
-    );
-    const outputEl = outputDoc.documentElement;
-    expect(outputEl.tagName).toBe("symbol");
-    expect(outputEl.getElementsByTagName("rect")).toHaveLength(1);
-    expect(outputEl.getElementsByTagName("circle")).toHaveLength(1);
-  });
+    const outputDoc = new xmldom.DOMParser().parseFromString(encoded, 'image/svg+xml')
+    const outputEl = outputDoc.documentElement
+    expect(outputEl.tagName).toBe('symbol')
+    expect(outputEl.getElementsByTagName('rect')).toHaveLength(1)
+    expect(outputEl.getElementsByTagName('circle')).toHaveLength(1)
+  })
 
-  it("should assign id attribute to generated symbol tag if it was provided by query", async function () {
+  it('should assign id attribute to generated symbol tag if it was provided by query', async function () {
     const config = {
       ...getBaseWebpackConfig(),
-      entry: "./test/input/icon.js",
-    };
+      entry: './test/input/icon.js'
+    }
 
-    config.module.rules[0].options.id = "foo";
+    config.module.rules[0].options.id = 'foo'
 
-    await runWebpack(config);
-    const encoded = await evaluateGeneratedBundle();
+    const assetName = await runWebpack(config)
+    const encoded = evaluateGeneratedBundle(assetName)
 
-    const outputDoc = new xmldom.DOMParser().parseFromString(
-      encoded,
-      "image/svg+xml"
-    );
-    const outputEl = outputDoc.documentElement;
-    expect(outputEl.getAttribute("id")).toBe("foo");
-  });
+    const outputDoc = new xmldom.DOMParser().parseFromString(encoded, 'image/svg+xml')
+    const outputEl = outputDoc.documentElement
+    expect(outputEl.getAttribute('id')).toBe('foo')
+  })
 
-  it("should assign class attribute to generated symbol tag if it was provided by query", async function () {
+  it('should assign class attribute to generated symbol tag if it was provided by query', async function () {
     const config = {
       ...getBaseWebpackConfig(),
-      entry: "./test/input/icon.js",
-    };
+      entry: './test/input/icon.js'
+    }
 
-    config.module.rules[0].options.class = "foo";
+    config.module.rules[0].options.class = 'foo'
 
-    await runWebpack(config);
-    const encoded = await evaluateGeneratedBundle();
+    const assetName = await runWebpack(config)
+    const encoded = evaluateGeneratedBundle(assetName)
 
-    const outputDoc = new xmldom.DOMParser().parseFromString(
-      encoded,
-      "image/svg+xml"
-    );
-    const outputEl = outputDoc.documentElement;
-    expect(outputEl.getAttribute("class")).toBe("foo");
-  });
+    const outputDoc = new xmldom.DOMParser().parseFromString(encoded, 'image/svg+xml')
+    const outputEl = outputDoc.documentElement
+    expect(outputEl.getAttribute('class')).toBe('foo')
+  })
 
-  it("should use provided attribute instead of one found in SVG file if it is specified in query", async function () {
+  it('should use provided attribute instead of one found in SVG file if it is specified in query', async function () {
     const config = {
       ...getBaseWebpackConfig(),
-      entry: "./test/input/icon.js",
-    };
+      entry: './test/input/icon.js'
+    }
 
-    config.module.rules[0].options.height = "400px";
+    config.module.rules[0].options.height = '400px'
 
-    await runWebpack(config);
-    const encoded = await evaluateGeneratedBundle();
+    const assetName = await runWebpack(config)
+    const encoded = evaluateGeneratedBundle(assetName)
 
-    const outputDoc = new xmldom.DOMParser().parseFromString(
-      encoded,
-      "image/svg+xml"
-    );
-    const outputEl = outputDoc.documentElement;
-    expect(outputEl.getAttribute("height")).toBe("400px");
-  });
+    const outputDoc = new xmldom.DOMParser().parseFromString(encoded, 'image/svg+xml')
+    const outputEl = outputDoc.documentElement
+    expect(outputEl.getAttribute('height')).toBe('400px')
+  })
 
-  it("should use given tag instead of default symbol tag if it was provided by query", async function () {
+  it('should use given tag instead of default symbol tag if it was provided by query', async function () {
     const config = {
       ...getBaseWebpackConfig(),
-      entry: "./test/input/icon.js",
-    };
+      entry: './test/input/icon.js'
+    }
 
-    config.module.rules[0].options.tag = "pattern";
+    config.module.rules[0].options.tag = 'pattern'
 
-    await runWebpack(config);
-    const encoded = await evaluateGeneratedBundle();
+    const assetName = await runWebpack(config)
+    const encoded = evaluateGeneratedBundle(assetName)
 
-    const outputDoc = new xmldom.DOMParser().parseFromString(
-      encoded,
-      "image/svg+xml"
-    );
-    const outputEl = outputDoc.documentElement;
-    expect(outputEl.tagName).toBe("pattern");
-  });
+    const outputDoc = new xmldom.DOMParser().parseFromString(encoded, 'image/svg+xml')
+    const outputEl = outputDoc.documentElement
+    expect(outputEl.tagName).toBe('pattern')
+  })
 
-  it("should be able to use SVG tag instead of default symbol tag if it was provided by query", async function () {
+  it('should be able to use SVG tag instead of default symbol tag if it was provided by query', async function () {
     const config = {
       ...getBaseWebpackConfig(),
-      entry: "./test/input/icon.js",
-    };
+      entry: './test/input/icon.js'
+    }
 
-    config.module.rules[0].options.tag = "svg";
+    config.module.rules[0].options.tag = 'svg'
 
-    await runWebpack(config);
-    const encoded = await evaluateGeneratedBundle();
+    const assetName = await runWebpack(config)
+    const encoded = evaluateGeneratedBundle(assetName)
 
-    const outputDoc = new xmldom.DOMParser().parseFromString(
-      encoded,
-      "image/svg+xml"
-    );
-    const outputEl = outputDoc.documentElement;
-    expect(outputEl.tagName).toBe("svg");
-  });
+    const outputDoc = new xmldom.DOMParser().parseFromString(encoded, 'image/svg+xml')
+    const outputEl = outputDoc.documentElement
+    expect(outputEl.tagName).toBe('svg')
+  })
 
-  it("should append random prefix to all ID attributes used", async function () {
+  it('should append random prefix to all ID attributes used', async function () {
     const config = {
       ...getBaseWebpackConfig(),
-      entry: "./test/input/icon.js",
-    };
+      entry: './test/input/icon.js'
+    }
 
-    await runWebpack(config);
-    const encoded = await evaluateGeneratedBundle();
+    const assetName = await runWebpack(config)
+    const encoded = evaluateGeneratedBundle(assetName)
 
-    const outputDoc = new xmldom.DOMParser().parseFromString(
-      encoded,
-      "image/svg+xml"
-    );
-    const outputEl = outputDoc.documentElement;
+    const outputDoc = new xmldom.DOMParser().parseFromString(encoded, 'image/svg+xml')
+    const outputEl = outputDoc.documentElement
 
-    const linearGradient = outputEl.getElementsByTagName("linearGradient");
-    expect(linearGradient).toHaveLength(1);
-    const prefixedId = linearGradient[0].getAttribute("id");
+    const linearGradient = outputEl.getElementsByTagName('linearGradient')
+    expect(linearGradient).toHaveLength(1)
+    const prefixedId = linearGradient[0].getAttribute('id')
 
-    const path = outputEl.getElementsByTagName("path");
-    expect(path).toHaveLength(1);
-    expect(path[0].getAttribute("fill")).toBe("url(#" + prefixedId + ")");
-  });
+    const path = outputEl.getElementsByTagName('path')
+    expect(path).toHaveLength(1)
+    expect(path[0].getAttribute('fill')).toBe('url(#' + prefixedId + ')')
+  })
 
-  it("should interpolate ID and class values", async function () {
+  it('should interpolate ID and class values', async function () {
     const config = {
       ...getBaseWebpackConfig(),
-      entry: "./test/input/icon.js",
-    };
+      entry: './test/input/icon.js'
+    }
 
-    config.module.rules[0].options.class = "[name].[ext]";
-    config.module.rules[0].options.id = "[name]";
+    config.module.rules[0].options.class = '[name].[ext]'
+    config.module.rules[0].options.id = '[name]'
 
-    await runWebpack(config);
-    const encoded = await evaluateGeneratedBundle();
+    const assetName = await runWebpack(config)
+    const encoded = evaluateGeneratedBundle(assetName)
 
-    const outputDoc = new xmldom.DOMParser().parseFromString(
-      encoded,
-      "image/svg+xml"
-    );
-    const outputEl = outputDoc.documentElement;
-    expect(outputEl.getAttribute("class")).toBe("icon.svg");
-    expect(outputEl.getAttribute("id")).toBe("icon");
-  });
-});
+    const outputDoc = new xmldom.DOMParser().parseFromString(encoded, 'image/svg+xml')
+    const outputEl = outputDoc.documentElement
+    expect(outputEl.getAttribute('class')).toBe('icon.svg')
+    expect(outputEl.getAttribute('id')).toBe('icon')
+  })
+})
