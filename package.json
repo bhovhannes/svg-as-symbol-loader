@@ -3,6 +3,10 @@
   "version": "1.2.2",
   "description": "A webpack loader which loads SVG file contents as SVG <symbol> element markup.",
   "main": "index.js",
+  "files": [
+    "index.js",
+    "src"
+  ],
   "scripts": {
     "format": "prettier --write '**/*.{ts,tsx,js,jsx,css,md,yml}'",
     "test": "jest --coverage --runInBand --detectOpenHandles",
