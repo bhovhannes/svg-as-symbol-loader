@@ -5,11 +5,11 @@
   "main": "index.js",
   "scripts": {
     "format": "prettier --write '**/*.{ts,tsx,js,jsx,css,md,yml}'",
-    "test": "jest --coverage",
-    "test-watch": "jest --watch"
+    "test": "jest --coverage --runInBand --detectOpenHandles",
+    "test-watch": "jest --watch --detectOpenHandles"
   },
   "dependencies": {
-    "loader-utils": "~2.0.0",
+    "loader-utils": "~3.2.0",
     "xmldom": "0.6.0",
     "xpath": "0.0.32"
   },
@@ -30,12 +30,12 @@
   },
   "homepage": "https://github.com/bhovhannes/svg-as-symbol-loader#readme",
   "devDependencies": {
-    "@arkweid/lefthook": "0.7.7",
     "@bhovhannes/shared-config": "0.0.1",
+    "@evilmartians/lefthook": "^0.8.0",
     "@jest/globals": "28.1.0",
-    "jest": "28.1.0",
+    "jest": "^28.1.1",
     "prettier": "2.6.2",
-    "webpack": "5.9.0"
+    "webpack": "5.73.0"
   },
   "engines": {
     "node": ">=10"

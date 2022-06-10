@@ -13,3 +13,5 @@ node_modules
 
 # Intemediate output directory for tests
 test/output
+
+.vscode
