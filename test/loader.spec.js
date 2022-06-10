@@ -1,9 +1,5 @@
 const { describe, it, afterEach, expect, afterAll } = require('@jest/globals')
 const { rejects } = require('assert')
-// const util = require('util');
-// const fs = require('fs');
-// const readdir = util.promisify(fs.readdir);
-// const unlink = util.promisify(fs.unlink);
 const path = require('path')
 const webpack = require('webpack')
 const xmldom = require('xmldom')
