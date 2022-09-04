@@ -1,5 +1,4 @@
-const { describe, it, afterEach, expect, afterAll } = require('@jest/globals')
-const { rejects } = require('assert')
+const { describe, it, expect } = require('@jest/globals')
 const path = require('path')
 const webpack = require('webpack')
 const xmldom = require('xmldom')
