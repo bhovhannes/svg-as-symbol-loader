@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "loader-utils": "~3.2.0",
-    "xmldom": "0.6.0",
+    "xmldom": "0.7.0",
     "xpath": "0.0.32"
   },
   "repository": {
