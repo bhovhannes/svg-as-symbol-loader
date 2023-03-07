@@ -1,7 +1,7 @@
 const { describe, it, expect } = require('@jest/globals')
 const path = require('path')
 const webpack = require('webpack')
-const xmldom = require('xmldom')
+const xmldom = require('@xmldom/xmldom')
 
 const outputDir = path.resolve(__dirname, './output')
 

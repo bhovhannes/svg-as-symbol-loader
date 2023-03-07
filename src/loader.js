@@ -1,6 +1,6 @@
 const loaderUtils = require('loader-utils')
 
-const { DOMParser, XMLSerializer } = require('xmldom')
+const { DOMParser, XMLSerializer } = require('@xmldom/xmldom')
 const xpath = require('xpath')
 const crypto = require('crypto')
 
