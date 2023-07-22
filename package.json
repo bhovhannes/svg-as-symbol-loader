@@ -39,7 +39,7 @@
     "@jest/globals": "29.6.1",
     "jest": "29.6.1",
     "prettier": "3.0.0",
-    "webpack": "5.88.1"
+    "webpack": "5.88.2"
   },
   "engines": {
     "node": ">=10"
