@@ -13,7 +13,7 @@
     "test-watch": "jest --watch --detectOpenHandles"
   },
   "dependencies": {
-    "loader-utils": "~3.2.1",
+    "loader-utils": "~3.3.0",
     "@xmldom/xmldom": "0.8.10",
     "xpath": "0.0.34"
   },
