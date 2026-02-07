@@ -35,7 +35,7 @@
   "homepage": "https://github.com/bhovhannes/svg-as-symbol-loader#readme",
   "devDependencies": {
     "@bhovhannes/shared-config": "0.0.1",
-    "@evilmartians/lefthook": "2.0.16",
+    "@evilmartians/lefthook": "2.1.0",
     "@jest/globals": "30.2.0",
     "jest": "30.2.0",
     "prettier": "3.8.1",
