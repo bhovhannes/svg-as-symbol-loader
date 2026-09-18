@@ -36,8 +36,8 @@
   "devDependencies": {
     "@bhovhannes/shared-config": "0.0.1",
     "@evilmartians/lefthook": "2.1.12",
-    "@jest/globals": "30.5.0",
-    "jest": "30.5.0",
+    "@jest/globals": "30.5.2",
+    "jest": "30.5.2",
     "prettier": "3.9.6",
     "webpack": "5.110.3"
   },
