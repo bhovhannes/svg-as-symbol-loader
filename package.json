@@ -38,7 +38,7 @@
     "@evilmartians/lefthook": "2.1.14",
     "@jest/globals": "30.5.0",
     "jest": "30.5.0",
-    "prettier": "3.9.8",
+    "prettier": "3.9.9",
     "webpack": "5.111.1"
   },
   "engines": {
