@@ -15,7 +15,7 @@
   "dependencies": {
     "loader-utils": "~3.3.0",
     "@xmldom/xmldom": "0.9.12",
-    "xpath": "0.0.34"
+    "xpath": "0.0.35"
   },
   "repository": {
     "type": "git",
